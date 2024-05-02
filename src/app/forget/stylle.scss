@@ -1,0 +1,13 @@
+.forget{
+    max-width: 100%;
+    min-height: 100%;
+    &__inputMail{
+       
+        display: flex;
+        flex-direction: column;
+        &>input{
+            width:50%
+        }
+        
+    }
+}

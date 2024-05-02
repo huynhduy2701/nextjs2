@@ -1,0 +1,57 @@
+.containerLogin{
+   max-width: 100%;
+   min-height: 100% ;
+}
+.formLogin{
+    max-width: 100%;
+   min-height: 100% ;
+}
+.cardLogin{
+    padding: 100px;
+    display: flex;
+    justify-content: center;
+}
+.cardBox{
+    // background-color: aqua;
+    border: 1px solid grey;
+    border-radius: 10px;
+    padding: 100px 50px 100px 50px;
+    
+}
+.cardHeader{
+    // padding: 20px;
+    
+}
+.cardHeader>h1{
+    font-weight: 600;
+    font-size: 22px;
+}
+.cardBody{
+    display: flex;
+    flex-direction: column;
+}
+.cardBody>input{
+    padding: 10px;
+    border: 1px solid grey;
+    border-radius: 10px;
+}
+// .CardFooter>span{
+//     padding: 74px;
+//     text-align: center;
+   
+// }
+.btnLogin{
+    margin-top: 10px;
+    background-color: blue;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    
+   
+}
+
+.btnLogin>button{
+   padding: 20px;
+   text-align: center;
+   color: white;
+}
