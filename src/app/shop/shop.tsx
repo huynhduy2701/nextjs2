@@ -24,6 +24,7 @@ const Shop=()=>{
         fetchProducts();
     }, []);
 
+  
 
     return (
         
@@ -66,10 +67,10 @@ const Shop=()=>{
                                         </div>
                                         <div className='shop__button'>
                                             <div className='shop__viewDetail'>
-                                                <Link href={`/shop/${item.id}`}>Xem Chi tiết</Link>
+                                                <a href={`/shop/${item.id}`}>Xem Chi tiết</a>
                                             </div>
                                             <div className='shop__addToCard'>
-                                                <button>Thêm sản phẩm</button>
+                                                <button type='submit' >Thêm sản phẩm</button>
                                             </div>
                                         </div>
                                     </div>

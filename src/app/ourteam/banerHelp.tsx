@@ -31,10 +31,13 @@ const BanerHelp=()=>{
                         </div>
                     </div> */}
                     <div className='banner_right'>
-                        <Link href={'#'} className='btnBanner'>
+                        {/* <Link href={'#'} className='btnBanner'>
                             <span>
                                 Get help here
                             </span>
+                        </Link> */}
+                        <Link href={'#'} className='btnSF'>
+                                    <span>Get help here</span>
                         </Link>
                     </div>
                 </div>

@@ -2,7 +2,7 @@
 import CarouselNav from "@/components/carousel";
 import Link from 'next/link';
 import '../Login/style.scss';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { showErrorToast, showSuccessToast } from "../erros/erros";
 import { ToastContainer } from "react-toastify";
 import { redirect, useRouter } from 'next/navigation'
@@ -35,7 +35,17 @@ const Register = () => {
         password: '',
         confirmPassword: '',
     });
-
+    // useEffect(()=>{
+    //     const checkToken = localStorage.getItem("token");
+    //       console.log("kt",checkToken);
+    //       if(checkToken){
+    //         router.push("/", { scroll: false })
+    //       }else{
+    //         window.location.href="/Register"
+    
+    //       }
+          
+    //   },[])
     const handleRegister = async () => {
         const rolePhone = /^0\d{9}[!@#$%^&*()_+\-=\[\]{};:"\\|,.<>\/?]*$/
         const roleName = /^[a-zA-Z\s]{4,}$/
@@ -235,3 +245,4 @@ const Register = () => {
 };
 
 export default Register;
+

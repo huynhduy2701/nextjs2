@@ -3,7 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 
 import  './global.scss'
-
+// import {config} from '../middleware'
 import '../components/style/style.scss'
 import NavBar from "./header/page";
 import Navbar from '../components/navBar'

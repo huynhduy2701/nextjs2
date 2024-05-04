@@ -30,8 +30,8 @@ const ProgrammicsProducts=()=>{
                                 5. Programmics Provides Cost-effective Information Technology Solutions to the clients based on their requirements and needs.
                                 </p>
                             </div>
-                            <Link href={'/'}>
-                                <span>Read More</span>
+                            <Link href={'#'} className='btnSF'>
+                                    <span>Read More</span>
                             </Link>
                         </div>
                         <div className='product__imgProduct item2'>
@@ -77,11 +77,9 @@ const ProgrammicsProducts=()=>{
                                          Programmics have extensively invested in technology and research. Hence, Programmics products are exceptional and phenomenal.
                                         </p>
                                     </div>
-                                    <Link href={'/'}>
-                                        <span>
-                                        Read More
-                                        </span>
-                                    </Link>
+                                    <Link href={'#'} className='btnSFT'>
+                                    <span>Read More</span>
+                            </Link>
                                 </div>
                             </div>
                         </div>

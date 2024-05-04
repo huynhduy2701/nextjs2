@@ -1,7 +1,3 @@
-.formInputCode{
-    max-width: 100%;
-    min-height: 100%;
-}
 .container{
     width: 100%; /* Chiều rộng container sẽ tự điều chỉnh để vừa với nội dung */
     max-width: 1200px; /* Đặt chiều rộng tối đa của container */
@@ -11,21 +7,19 @@
     padding-right: 15px; /* Thêm padding bên phải */
     padding-top: 50px;
     padding-bottom: 50px;
-
 }
-.formInputCode{
-    &__wrapp{
+.resetPass{
+    max-width: 100%;
+    min-height: 100%;
+    &__wrap{
         width: 100%;
-        border: 1px solid grey;
+        border: 1px solid;
         border-radius: 15px;
-        // margin: auto;
         padding: 20px;
     }
     &__formInput{
         display: flex;
         flex-direction: column;
-    }
-    &__formInput{
         &>input{
             padding: 20px;
             border: 1px solid;
@@ -36,23 +30,22 @@
             font-size: 25px;
             font-weight: 500;
         }
+
+    }
+    &__btnReset{
+        background-color: blue;
+        border-radius: 15px;
+        &>button{
+            font-size: 20px;
+            font-weight: 400;
+            padding: 10px;
+            color: white;
+            display: block;
+            margin: auto;
+        }
     }
     &__button{
         margin-top: 20px;
     }
-
-        &__btnInputCode{
-            background-color: blue;
-            border-radius: 15px;
-            &>button{
-                font-size: 20px;
-                font-weight: 400;
-                padding: 10px;
-                color: white;
-                display: block;
-                margin: auto;
-            }
-        }
     
-
 }

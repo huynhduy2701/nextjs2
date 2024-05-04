@@ -5,31 +5,31 @@ import img from '../../../../public/assets/imgUser.png'
 import Image from 'next/image'
 import { Product } from "@/app/product"
 import { showSuccessToast } from "@/app/erros/erros"
-import { redirect, useRouter } from 'next/navigation'
+import { useRouter } from 'next/navigation' // Sử dụng useRouter thay vì redirect
 import { ToastContainer } from "react-toastify"
 export default function Page({ params }: { params: { id: number } }) {
   const [products, setProducts] = useState<Product>();
   const [isLoading, setIsLoading] = useState(true);
   const [isLogin, setIsLogin] = useState(false);
-  const checkIsLoginUser= localStorage.getItem('token')
-  const url =`http://localhost:4000/product/${params.id}`
+  const [quantity, setQuantity] = useState(1); // Thêm state lưu trữ số lượng sản phẩm
+  const checkIsLoginUser = localStorage.getItem('token')
+  const url = `http://localhost:4000/product/${params.id}`
+  
   const router = useRouter()
-console.log(url);
-console.log("aaa",products);
+  console.log(url);
+  console.log("aaa", products);
+
   useEffect(() => {
     if (checkIsLoginUser) {
       setIsLogin(true)
-    }else{
-      showSuccessToast("Chưa đăng nhập")  
+    } else {
+      showSuccessToast("Chưa đăng nhập")
       router.push('/Login', { scroll: false });
-      // setTimeout(() => {
-      // }, 500);
       console.log("chưa đăng nhập");
     }
     const fetchProdutcDetail = async () => {
       try {
-        const res = await fetch("http://localhost:3001/product/"+params.id)
-        // .then((data)=>data.json())
+        const res = await fetch("http://localhost:3001/product/" + params.id)
         const data = await res.json();
         console.log(data);
         setProducts(data);
@@ -41,22 +41,37 @@ console.log("aaa",products);
     };
 
     fetchProdutcDetail();
-  },[params.id]);
+  }, [params.id]);
+
+  const decreaseQuantity = () => {
+    if (quantity > 0) {
+      setQuantity(prevQuantity => prevQuantity - 1);
+    }
+  };
+
+  const increaseQuantity = () => {
+    setQuantity(prevQuantity => prevQuantity + 1);
+  };
+  const handleAddToCard = () => {
+    console.log(products);
+    localStorage.setItem("products", JSON.stringify(products));
+
+    showSuccessToast("Thêm sản phẩm thành công");
+  };
   return (
-    
     <div className="productDetail">
-        <ToastContainer
-                position="top-center"
-                autoClose={5000}
-                hideProgressBar={false}
-                newestOnTop={false}
-                closeOnClick
-                rtl={false}
-                pauseOnFocusLoss
-                draggable
-                pauseOnHover
-                theme="light"
-            />
+      <ToastContainer
+        position="top-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
       <div className="container">
         {products && (
           <div className="productDetail__wrap">
@@ -73,17 +88,17 @@ console.log("aaa",products);
                   <span>{products.price}</span>
                 </div>
                 <div className="productDetail__button">
-                  <div className="productDetail__minus">
+                  <div className={`productDetail__minus ${quantity === 1 ? 'disabled' : ''}`} onClick={decreaseQuantity}> {/* Kết nối hàm giảm số lượng */}
                     <span>-</span>
                   </div>
-                  <input type="text" value={"0"} />
-                  <div className="productDetail__plus">
+                  <input type="text" value={quantity} readOnly  />
+                  <div className="productDetail__plus" onClick={increaseQuantity}> {/* Kết nối hàm tăng số lượng */}
                     <span>+</span>
                   </div>
                 </div>
                 <div className="productDetail__buttonSubmit">
                   <div className="productDetail__btnAddToCard">
-                    <span>Add to Card</span>
+                    <button onClick={handleAddToCard}>Add to Card</button>
                   </div>
                 </div>
               </div>
@@ -99,5 +114,4 @@ console.log("aaa",products);
       </div>
     </div>
   );
-    
-  }
+}

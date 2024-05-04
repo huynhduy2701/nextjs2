@@ -4,14 +4,9 @@ import Image from "next/image";
 import logo from "../../../public/assets/Copy-of-Copy-of-Programmics.png";
 import { RiWhatsappFill } from "react-icons/ri";
 import { CiSearch } from "react-icons/ci";
-import Link from "next/link";
-import { Carousel } from "antd";
-import img2 from "../../public/assets/imgpeople.png";
-import img1 from "../../public/assets/cungtay.png";
 import { FaBars } from "react-icons/fa6";
 import logoRes from "../../../public/assets/Programmics-1-removebg-preview.png"
 import { useEffect, useRef, useState } from "react";
-import { IoIosArrowForward } from "react-icons/io";
 import { IoIosSearch } from "react-icons/io";
 // import './style/reponsive.scss'
 import { usePathname } from 'next/navigation'
@@ -20,6 +15,12 @@ import { redirect, useRouter } from 'next/navigation'
 import { showErrorToast, showSuccessToast } from "../erros/erros";
 import { ToastContainer } from "react-toastify";
 import './nav'
+import React from 'react';
+import { DownOutlined } from '@ant-design/icons';
+import type { MenuProps } from 'antd';
+import { Dropdown, Space } from 'antd';
+import { FaBell } from "react-icons/fa";
+import { deleteCookie } from 'cookies-next';
 interface User {
   firstName: string;
 
@@ -32,7 +33,8 @@ const NavBar = () => {
   const [isLogin, setIsLogin] = useState(false);
   const [firstName, setFirstName] = useState('');
   const [isScrolled, setIsScrolled] = useState(false);
-  const [isSticky, setIsSticky] = useState(false);
+  const [count, setCount] = useState("");
+
   const navRef = useRef(null);
 
   useEffect(() => {
@@ -50,22 +52,14 @@ const NavBar = () => {
     }
   }, []);
 
+  // let d=0;
   // useEffect(() => {
-  //   const handleScroll = () => {
-  //     const offset = window.scrollY;
-  //     if (offset > 200) {
-  //       setIsSticky(true);
-  //     } else {
-  //       setIsSticky(false);
-  //     }
-  //   };
-
-  //   window.addEventListener("scroll", handleScroll);
-
-  //   return () => {
-  //     window.removeEventListener("scroll", handleScroll);
-  //   };
-  // }, []);
+  //   const product=localStorage.getItem('products');
+  //   const products=product?JSON.parse(product):''
+  //   if(products.length>0){
+      
+  //   }
+  // }, [products]);
   const pathname = usePathname();
   const isHome = pathname === '/';
 
@@ -86,6 +80,7 @@ const NavBar = () => {
   
 
   const handleLogut = () => {
+    deleteCookie("logged");
     localStorage.removeItem('token');
     setIsLogin(false);
     showSuccessToast("Đăng Xuất Thành Công")
@@ -93,6 +88,32 @@ const NavBar = () => {
       router.push('/Login', { scroll: false });
     }, 2000);
   }
+  const items: MenuProps['items'] = [
+    {
+      label: (
+        <a   rel="noopener noreferrer" href="#">
+          Thông tin
+        </a>
+      ),
+      key: '0',
+    },
+    {
+      label: (
+        <a onClick={handleLogut}  rel="noopener noreferrer">
+          Đăng xuất
+        </a>
+      ),
+      key: '1',
+    },
+    {
+      type: 'divider',
+    },
+    {
+      label: '',
+      key: '3',
+      disabled: true,
+    },
+  ];
 
   return (
     <div>
@@ -195,9 +216,21 @@ const NavBar = () => {
               </div>
 
               <div className="isLoginOrSignup">
+              <div className="bell">
+                <FaBell/>
+                    <span>0</span>
+               </div>
                 {
                   isLogin ? (
-                    <a href={"#"} onClick={handleLogut}>đăng xuất</a>
+                    <Dropdown menu={{ items }}>
+                  <a onClick={(e) => e.preventDefault()}>
+                    <Space>
+                  <span>Xin chào ,{firstName}  </span>
+                      
+                      <DownOutlined />
+                    </Space>
+                  </a>
+                </Dropdown>
 
                   ) : (
 
@@ -208,7 +241,7 @@ const NavBar = () => {
               <div>
                 <span className="nameUser">
                   {/* lấy ra firstName khi đăng nhập  ở đây*/}
-                  <span>{firstName}</span>
+                  {/* <span>{firstName}</span> */}
                 </span>
               </div>
 
@@ -320,9 +353,24 @@ const NavBar = () => {
               </div>
 
               <div className="isLoginOrSignup">
+               <div className="bell">
+                <FaBell/>
+                    <span>0</span>
+               </div>
                 {
                   isLogin ? (
-                    <a href={"#"} onClick={handleLogut}>đăng xuất</a>
+                    
+                    <Dropdown menu={{ items }}>
+                    <a onClick={(e) => e.preventDefault()}>
+                      <Space>
+                    <span>Xin chào ,{firstName}  </span>
+                        
+                        <DownOutlined />
+                      </Space>
+                    </a>
+                  </Dropdown>
+
+                  
 
                   ) : (
 
@@ -333,8 +381,16 @@ const NavBar = () => {
               <div>
                 <span className="nameUser">
                   {/* lấy ra firstName khi đăng nhập  ở đây*/}
-                  <span>{firstName}</span>
                 </span>
+                {/* <Dropdown menu={{ items }}>
+                  <a onClick={(e) => e.preventDefault()}>
+                    <Space>
+                  <span>Xin chào ,{firstName}</span>
+                      
+                      <DownOutlined />
+                    </Space>
+                  </a>
+                </Dropdown> */}
               </div>
 
             </div>
@@ -417,7 +473,15 @@ const NavBar = () => {
                   <li>
                     {
                       isLogin ? (
-                        <a href={"#"} onClick={handleLogut}>đăng xuất</a>
+                        <Dropdown menu={{ items }}>
+                        <a onClick={(e) => e.preventDefault()}>
+                          <Space>
+                        <span>Xin chào ,{firstName}</span>
+                            
+                            <DownOutlined />
+                          </Space>
+                        </a>
+                      </Dropdown>
 
                       ) : (
 

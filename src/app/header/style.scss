@@ -299,6 +299,13 @@ footer{
     background-color: white; /* Adjust background color as needed */
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add box shadow for better visibility */
 }
+.isLoginOrSignup,.bell{
+    display: flex;
+    align-items: center;
+}
+.bell{
+    padding: 0 20px;
+}
 @media screen and (max-width:1100px) {
     .service{
         display: none;

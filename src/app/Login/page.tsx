@@ -2,13 +2,14 @@
 
 import "./style.scss";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import TitlePage from "@/components/titlepage";
 import { ToastContainer, toast } from "react-toastify";
 import { showErrorToast, showSuccessToast } from "../erros/erros";
-
+import { useRouter } from 'next/navigation'
+import { setCookie } from 'cookies-next';
 const Login = () => {
-  // const router = useRouter()
+  const router = useRouter()
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const header = {
@@ -22,6 +23,7 @@ const Login = () => {
       .replace(/\//g, "_")
       .replace(/=+$/, "");
   };
+ 
 
   // thêm các hàm onChange vào các trường input của username và mật khẩu. Khi người dùng nhập vào các trường này, giá trị của chúng sẽ được cập nhật vào state tương ứng (username và Matkhau). Sau đó, khi bạn đăng nhập thành công, giá trị của username và Matkhau sẽ được lấy từ state để in ra console
   const handleLogin = async () => {
@@ -31,8 +33,8 @@ const Login = () => {
     // }
     // console.log(email)
     // console.log(password)
+  
     const listUser = localStorage.getItem("listUser");
-    const checkToken = localStorage.getItem("token");
 
     // Chuyển đổi chuỗi JSON thành mảng
     const newListUser = listUser ? JSON.parse(listUser) : [];
@@ -51,9 +53,10 @@ const Login = () => {
 
         // Lưu token vào localStorage
         localStorage.setItem("token", token);
-        console.log(checkToken);
+        // console.log(checkToken);
         showSuccessToast("Đăng Nhập Thành Công");
         console.log("có tài khoản nhập vào");
+        setCookie('logged', 'true');
         setTimeout(() => {
           window.location.href = "/";
           // router.push('/', { scroll: false });
