@@ -43,7 +43,7 @@ const Login = () => {
     );
     if (email === "" || password === "") {
       console.log("Không được để trống");
-      showErrorToast("Vui Lòng điền  đủ thông tin để đăng nhập");
+      showErrorToast("Vui Lòng điền  đủ thông tin đầy đủ để đăng nhập");
     } else if (newListUser.length > 0) {
       console.log(newListUser);
       console.log("có tài khoản user");
