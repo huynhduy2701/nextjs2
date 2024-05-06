@@ -4,70 +4,69 @@ import './style.scss'
 import { showErrorToast, showSuccessToast } from "@/app/erros/erros";
 interface UserData {
     email: string;
-    password: string;
-    emailStore:string;
-    oldPass:string
+    emailStore: string;
+    phone: string; // Thêm trường phone
+    oldPass: string;
 }
 
 const ResetPass = () => {
     const [inputPass, setInputPass] = useState('');
     const [confirmPass, setConfirmPass] = useState('');
-    const [emailStore,setEmailStore]=useState('');
-    const [oldPassword, setOldPassword] = useState(""); 
-    // const listUser = localStorage.getItem('listUser')
-    // const NewlistUser = listUser ? JSON.parse(listUser) : '';
+    const [emailStore, setEmailStore] = useState('');
+    const [oldPassword, setOldPassword] = useState("");
     const [listUser, setListUser] = useState<UserData[]>([]);
-    useEffect(()=>{
 
-        const getEmailCheck = localStorage.getItem('mailUser');
-        const mailUser = getEmailCheck ? JSON.parse(getEmailCheck) : '';
-        setEmailStore(mailUser.email);
+    useEffect(() => {
+        const getEmailCheck = localStorage.getItem('infoInputUser');
+        const userData = getEmailCheck ? JSON.parse(getEmailCheck) : null;
 
-        const listUserJson = localStorage.getItem('listUser');
-        const userList = listUserJson ? JSON.parse(listUserJson) : [];
-        setListUser(userList);
-        const user = userList.find((user:UserData) => user.email === mailUser.email);
-        if (user) {
-          setOldPassword(user.password);
+        if (userData) {
+            setEmailStore(userData.email);
+            const listUserJson = localStorage.getItem('listUser');
+            const userList = listUserJson ? JSON.parse(listUserJson) : [];
+            setListUser(userList);
+            const user = userList.find((user: UserData) => {
+                // Kiểm tra nếu userData chứa trường phone, tìm kiếm bằng phone, ngược lại tìm kiếm bằng email
+                return userData.phone ? user.phone === userData.phone : user.email === userData.email;
+            });
+            if (user) {
+                setOldPassword(user.password);
+            }
         }
+    }, []);
 
-
-    },[])
     const handleUpdate = () => {
-        if(inputPass===""||confirmPass===""){
-            showErrorToast("Vui lòng nhập password")
-        }
-        else if(inputPass.length <6){
-            showErrorToast("Mật khẩu phải hơn 6 kí tự")
-
-        }
-        else if(inputPass!==confirmPass){
-            showErrorToast("Mật khẩu chưa trùng khớp")
-
-        }
-        else if (oldPassword === inputPass) {
+        if (inputPass === "" || confirmPass === "") {
+            showErrorToast("Vui lòng nhập password");
+        } else if (inputPass.length < 6) {
+            showErrorToast("Mật khẩu phải hơn 6 kí tự");
+        } else if (inputPass !== confirmPass) {
+            showErrorToast("Mật khẩu chưa trùng khớp");
+        } else if (oldPassword === inputPass) {
             showErrorToast("Bạn đang nhập mật khẩu cũ");
-          } 
-        else if (listUser.length > 0) {
+        } else if (listUser.length > 0) {
             const updatedListUser = listUser.map(user => {
-                if (user.email === emailStore) {
+                if ((user.email === emailStore && !user.phone) || (user.phone === emailStore && user.phone)) {
                     return {
-                        ...user,//mai trả bài
-                        password: inputPass // Cập nhật mật khẩu mới
+                        ...user,
+                        password: inputPass
                     };
                 }
                 return user;
             });
+             // Cập nhật danh sách người dùng trong localStorage
             localStorage.setItem('listUser', JSON.stringify(updatedListUser));
-            console.log('Cập nhật mật khẩu thành công!');
-            showSuccessToast("Cập nhật mật khẩu thành công")
-            setTimeout(()=>{
-                localStorage.removeItem("mailUser")
-                window.location.href="/Login"
-            },2000)
+
+            // Cập nhật danh sách người dùng trong state
+            setListUser(updatedListUser);
+
+            showSuccessToast("Cập nhật mật khẩu thành công");
+            setTimeout(() => {
+                localStorage.removeItem("infoInputUser");
+                window.location.href = "/Login";
+            }, 2000);
         }
-     
-    }
+    };
 
     return (
         <div className="resetPass">
@@ -76,8 +75,8 @@ const ResetPass = () => {
                     <div className="resetPass__formReset">
                         <div className="resetPass__formInput">
                             <label htmlFor="">Nhập mật khẩu mới</label>
-                            <input type="text" placeholder="Nhập mật khẩu mới" onChange={(e) => setInputPass(e.target.value)} />
-                            <input type="text" placeholder="Nhập lại mật khẩu mới" onChange={(e) => setConfirmPass(e.target.value)} />
+                            <input type="password" placeholder="Nhập mật khẩu mới" value={inputPass} onChange={(e) => setInputPass(e.target.value)} />
+                            <input type="password" placeholder="Nhập lại mật khẩu mới" value={confirmPass} onChange={(e) => setConfirmPass(e.target.value)} />
                         </div>
                         <div className="resetPass__button">
                             <div className="resetPass__btnReset">
@@ -88,7 +87,7 @@ const ResetPass = () => {
                 </div>
             </div>
         </div>
-    )
-}
+    );
+};
 
 export default ResetPass;

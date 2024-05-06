@@ -15,22 +15,11 @@ const FindEmail=()=>{
     const [numberPhone,setNumberPhone]=useState('')
     const [getValueForm,setGetValueForm]=useState('')
     const [otp,setOtp]=useState('')
-    const [otpSent,setOtpSent]=useState(false)
-    const recaptchaVerifierRef = useRef<RecaptchaVerifier | null>(null);
-    const [confirmationResult, setConfirmationResult] = useState<ConfirmationResult | undefined>(undefined);
-    const auth = getAuth(app)
-    const router = useRouter()
+ 
     const handleGetValue = (e: ChangeEvent<HTMLInputElement>) => {
         setGetValueForm(e.target.value);
     };
-    useEffect(() => {
-        recaptchaVerifierRef.current = new RecaptchaVerifier(auth, 'recaptcha-container', {
-            'size': 'normal',
-            'callback': () => {
-                // Your callback logic here
-            }
-        }) 
-    }, [auth])
+   
     useEffect(()=>{
         const listUser = localStorage.getItem('listUser') 
             // Kiểm tra xem giá trị đầu vào chỉ chứa các chữ số hay không
@@ -47,34 +36,7 @@ const FindEmail=()=>{
         console.log("email : ", email);
     }
     })
-    const handleOTPChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setOtp(e.target.value)
-    }
-    const handleSendOTP = async () => {
-        const formatPhone= numberPhone.replace(/^0+/, '+84');
-
-        try {
-            const formattedPhoneNumber = `+${formatPhone.replace(/\D/g, '')}`
-            const confirmation = await signInWithPhoneNumber(auth, formattedPhoneNumber, recaptchaVerifierRef.current!)
-            setConfirmationResult(confirmation)
-            setOtpSent(true)
-            setNumberPhone('')
-            alert("OTP sent")
-        } catch (error) {
-            console.log(error);
-        }
-    }
-    const handleOTPSubmit = async () => {
-        try {
-            if (confirmationResult) {
-                await confirmationResult.confirm(otp)
-                setOtp('')
-                router.push('/dashboard')
-            }
-        } catch (error) {
-            console.log(error);
-        }
-    }
+   
     const handleFindEmail= async(e:MouseEvent<HTMLButtonElement>)=>{
         // console.log("So dien thoai : ",getValueForm)
         e.preventDefault();
