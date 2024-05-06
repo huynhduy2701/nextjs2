@@ -1,16 +1,38 @@
 "use client"
-import { useState ,MouseEvent } from 'react'
+import { useState, MouseEvent, ChangeEvent, useEffect } from 'react';
 import './stylle.scss'
 import { useRouter } from 'next/router'
 import { showErrorToast, showSuccessToast } from '../erros/erros'
 interface UserData{
-    email :string
+    email :string,
+    numberPhone:string
 }
 const FindEmail=()=>{
 
     const [email,setEmail]= useState("")
+    const [numberPhone,setNumberPhone]=useState('')
+    const [getValueForm,setGetValueForm]=useState('')
+    const handleGetValue = (e: ChangeEvent<HTMLInputElement>) => {
+        setGetValueForm(e.target.value);
+    };
+    useEffect(()=>{
+        const listUser = localStorage.getItem('listUser') 
+    })
     const handleFindEmail= async(e:MouseEvent<HTMLButtonElement>)=>{
+        console.log("So dien thoai : ",getValueForm)
         e.preventDefault();
+         // Kiểm tra xem giá trị đầu vào chỉ chứa các chữ số hay không
+    if (/^\d+$/.test(getValueForm)) {
+        // Nếu chỉ chứa các chữ số, loại bỏ các số 0 ở đầu và thêm +84
+        const phoneNumber = getValueForm.replace(/^0+/, '+84');
+        setNumberPhone(phoneNumber);
+        console.log("email : ", numberPhone);
+    } else {
+        // Nếu chứa kí tự không phải chữ số, coi nó là địa chỉ email
+        setEmail(getValueForm);
+        console.log("email : ", email);
+    }
+       
         const listUser = localStorage.getItem('listUser')
         const newListUser: UserData[] = listUser ? JSON.parse(listUser) : [];
         console.log(email);
@@ -25,8 +47,8 @@ const FindEmail=()=>{
                 message: "Your message here"  // Define or initialize message
             })
         })
-        if(email===""){
-            showErrorToast("Vui lòng nhập email")
+        if(getValueForm===""){
+            showErrorToast("Vui lòng nhập email hoặc số điện thoại")
             return
         }
         else if (newListUser.length>0) {
@@ -43,18 +65,9 @@ const FindEmail=()=>{
                 return
             }else{
                 console.log("tìm thấy người dùng");
-            //   try {
-                
-            //   } catch (error) {
-            //     console.log(error);
-            //   }
-                // Tạo biến user
-                // let user = {
-                    //     email: email
-                    // }
-                    
                     const userData: UserData = {
-                        email: email 
+                        email: email ,
+                        numberPhone:numberPhone
                     };
                     
                     // Đẩy user lên localStorage với tên 'mailUser'
@@ -75,10 +88,10 @@ const FindEmail=()=>{
             <div className="container--forget">
                 <div className="forget__form">
                     <div className="forget__inputMail">
-                        <label htmlFor="">Email</label>
+                        <label htmlFor="">Email or PhoneNumber</label>
                         <input type="text"
                          className={'email'}
-                         onChange={(e)=>setEmail(e.target.value)}
+                         onChange={(handleGetValue)}
                          placeholder="Nhập email để tìm kím người dùng" />
                     </div>
                     <div className="form__button">
